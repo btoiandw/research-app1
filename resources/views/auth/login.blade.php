@@ -1,31 +1,18 @@
 @section('title', 'Login')
 @include('main')
 <link href="{{ asset('css/login.css') }}" rel="stylesheet">
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
-<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="contact-form">
     <div class="d-grid d-md-flex justify-content-md-center">
         <img alt="" class="avatar" src="{{ asset('img/logo-kpru.png') }}">
         <h5>Research and Development Institute</h5>
     </div>
-
     @if ($message = Session::get('error'))
         <script>
             Swal.fire({
                 icon: 'error',
                 /* title: 'Oops...', */
                 text: 'Username or Password Incorrect!',
-                /*  footer: '<a href="">Why do I have this issue?</a>' */
-            });
-        </script>
-    @elseif ($message = Session::get('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                /* title: 'Oops...', */
-                text: 'Login Successful!',
                 /*  footer: '<a href="">Why do I have this issue?</a>' */
             });
         </script>
@@ -39,6 +26,7 @@
             </ul>
         </div> --}}
     @endif
+
     <form id="form-validation" name="form-validation" method="POST" action="{{ route('login') }}">
         @csrf
         <label class="form-label">Username</label>

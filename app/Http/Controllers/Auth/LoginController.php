@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
@@ -59,13 +60,17 @@ class LoginController extends Controller
 
         if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
             if (auth()->user()->role == 1) {
-                return redirect()->route('admin.dashboard')->with('success', 'Login Successful!');
+                Alert::success('Login Successfully!!');
+                return redirect()->route('admin.dashboard');
             } elseif (auth()->user()->role == 2) {
-                return redirect()->route('director.dashboard')->with('success', 'Login Successful!');
+                Alert::success('Login Successfully!!');
+                return redirect()->route('director.dashboard');
             } elseif (auth()->user()->role == 0) {
-                return redirect()->route('user.dashboard')->with('success', 'Login Successful!');
+                Alert::success('Login Successfully!!');
+                return redirect()->route('user.dashboard');
             }
         } else {
+            Alert::error('Email or password incorrect');
             return redirect()->route('login')->with('error', 'Email or password incorrect');
         }
     }
