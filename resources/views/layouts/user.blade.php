@@ -23,15 +23,45 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
+<style>
+    .nav {
+        background-color: #aa1616;
+    }
+
+    .nav-text {
+        color: #ffffff;
+    }
+
+    .text {
+        color: #fff;
+    }
+
+    .nav-text:hover {
+        display: block;
+        background-color: #EFF5F5;
+        color: #111;
+        padding: 8px 18px 8px 18px;
+        border-radius: 5px;
+        opacity: 0.5;
+    }
+
+    .custom-toggler .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.75)' stroke-width='3' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+    }
+
+    .custom-toggler.navbar-toggler {
+        border:0px;
+    }
+</style>
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md bg-black shadow-sm">
+        <nav class="navbar navbar-expand-md shadow-sm nav">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand text" href="{{ url('/') }}">
+                    <img src="{{ asset('img/logo-kpru.png') }}" width="50px" alt="logo" />
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -60,25 +90,28 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('หน้าหลัก') }}</a>
+                                <a class="nav-link nav-text" href="{{ route('register') }}">{{ __('หน้าหลัก') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Admin') }}</a>
+                                <a class="nav-link nav-text" href="{{ route('register') }}">{{ __('Admin') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('โครงร่างงานวิจัย') }}</a>
+                                <a class="nav-link nav-text"
+                                    href="{{ route('register') }}">{{ __('โครงร่างงานวิจัย') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('งานวิจัย') }}</a>
+                                <a class="nav-link nav-text" href="{{ route('register') }}">{{ __('งานวิจัย') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('งานตีพิมพ์เผยแพร่') }}</a>
+                                <a class="nav-link nav-text"
+                                    href="{{ route('register') }}">{{ __('งานตีพิมพ์เผยแพร่') }}</a>
                             </li>
-                            <li class="btn btn-sm btn-danger">
-                                <a class="nav-link" href="{{ route('logout') }}"
+                            <hr />
+                            <li class="nav-item">
+                                <a class="nav-link nav-text" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{ __('ออกจากระบบ') }}
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf

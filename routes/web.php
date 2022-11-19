@@ -17,8 +17,12 @@ use App\Http\Controllers\DirectorController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+/* Route::get('/', function () {
+    return view('login');
+}); */
+
+Route::get('/', function(){
+    return view('auth.login');
 });
 
 Auth::routes();
