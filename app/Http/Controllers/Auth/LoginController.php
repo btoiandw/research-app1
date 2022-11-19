@@ -59,11 +59,11 @@ class LoginController extends Controller
 
         if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
             if (auth()->user()->role == 1) {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('admin.dashboard')->with('success', 'Login Successful!');
             } elseif (auth()->user()->role == 2) {
-                return redirect()->route('director.dashboard');
+                return redirect()->route('director.dashboard')->with('success', 'Login Successful!');
             } elseif (auth()->user()->role == 0) {
-                return redirect()->route('user.dashboard');
+                return redirect()->route('user.dashboard')->with('success', 'Login Successful!');
             }
         } else {
             return redirect()->route('login')->with('error', 'Email or password incorrect');
