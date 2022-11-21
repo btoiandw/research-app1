@@ -22,10 +22,26 @@
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/user.css') }}" rel="stylesheet" />
 </head>
 <style>
     .nav {
         background-color: #aa1616;
+        -webkit-box-shadow: 0 24px 10px -20px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 24px 10px -20px rgba(0, 0, 0, 0.5);
+        list-style: none;
+        margin: 0;
+        position: fixed;
+        top: 0;
+        z-index: 99;
+        width: 100%;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items: center;
+        -webkit-flex-flow: row wrap;
     }
 
     .nav-text {
@@ -52,14 +68,28 @@
     .custom-toggler.navbar-toggler {
         border: 0px;
     }
+
+    .wrapper {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-flow: row wrap;
+        flex-flow: row wrap;
+        /* font-weight: bold;*/
+        /*text-align: center;*/
+        position: relative;
+        top: 112px;
+    }
 </style>
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md shadow-sm nav">
+        <nav class="navbar navbar-expand-md nav ">
             <div class="container">
                 <a class="navbar-brand text" href="{{ url('/') }}">
-                    <img src="{{ asset('img/logo-kpru.png') }}" width="50px" alt="logo" />
+                    <img src="{{ asset('img/logo-kpru.png') }}" width="50px" height="60px" alt="logo" />
                 </a>
                 <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -124,8 +154,11 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
+        <main class="wrapper">
+            
+                @yield('content')
+           
+            
         </main>
     </div>
     <!-- JavaScript Bundle with Popper -->
