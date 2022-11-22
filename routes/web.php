@@ -44,7 +44,7 @@ Route::group([
     'middleware'=>['auth']
 ], function(){
     Route::get('dashboard',[UserController::class,'index'])->name('user.dashboard');
-    Route::get('insert-research',[UserController::class,'insertResearch'])->name('insert-research');
+    Route::post('insert-research',[UserController::class,'insertResearch'])->name('insert-research');
 });
 
 Route::group([

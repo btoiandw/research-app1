@@ -6,6 +6,8 @@
 <!-- Isolated Version of Bootstrap, not needed if your site already uses Bootstrap -->
 <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- Bootstrap Date-Picker Plugin -->
 <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
@@ -54,7 +56,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       {{--  <tr>
+                        {{--  <tr>
                             <th scope="row">1</th>
                             <td></td>
                             <td>
@@ -82,20 +84,40 @@
                         <h1 class="modal-title fs-5" id="exampleModalLabel">ส่งโครงร่างงานวิจัย</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="POST" action="" enctype="multipart/form-data">
+                    @if (Session::has('success'))
+                        <div class="alert alert-success">
+                            {{ Session::get('success') }}
+                            @php
+                                Session::forget('success');
+                            @endphp
+                        </div>
+                    @endif
+                    <form id="form-insert" name="form-insert" method="POST" action="{{ route('insert-research') }}"
+                        enctype="multipart/form-data">
+                        @csrf
                         <div class="modal-body">
 
                             <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">ปีงบประมาณ</label>
-                                <input type="text" class="form-control" id="recipient-name">
+                                <label for="year_research" class="col-form-label">ปีงบประมาณ</label>
+                                <input type="text" class="form-control" id="year_research" value="{{ date('Y') + 544 }}"
+                                    name="year_research">
+                                @if ($errors->has('year_research'))
+                                    <span class="text-danger">{{ $errors->first('year_research') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
-                                <label for="message-text" class="col-form-label">ชื่อโครงร่างงานวิจัยภาษาไทย</label>
-                                <textarea class="form-control" id="message-text"></textarea>
+                                <label for="research_nameTH" class="col-form-label">ชื่อโครงร่างงานวิจัยภาษาไทย</label>
+                                <textarea class="form-control" id="research_nameTH" name="research_nameTH"></textarea>
+                                @if ($errors->has('research_nameTH'))
+                                    <span class="text-danger">{{ $errors->first('research_nameTH') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
-                                <label for="message-text" class="col-form-label">ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</label>
-                                <textarea class="form-control" id="message-text"></textarea>
+                                <label for="research_nameEN" class="col-form-label">ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</label>
+                                <textarea class="form-control" id="research_nameEN" name="research_nameEN"></textarea>
+                                @if ($errors->has('research_nameEN'))
+                                    <span class="text-danger">{{ $errors->first('research_nameEN') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <label for="message-text" class="col-form-label">รายชื่อนักวิจัย</label>
@@ -115,86 +137,141 @@
                                                 <td>
                                                     <input type="text" name="researcher[]" id="researcher"
                                                         class="form-control">
+
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control" name="faculty[]"
                                                         id="faculty">
+
                                                 </td>
                                                 <td>
                                                     <select class="form-select " name="role-research[]" id="role-research">
                                                         <option value="หัวหน้าโครงการวิจัย">หัวหน้าโครงการวิจัย</option>
                                                         <option value="ผู้ร่วมวิจัย">ผู้ร่วมวิจัย</option>
                                                     </select>
+
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control" name="pc[]" id="pc"
-                                                        placeholder="0.00" />
+                                                    <input type="number" class="form-control" name="pc[]"
+                                                        id="pc" placeholder="0.00" />
+
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-info" id="addBtn">+</button>
                                                 </td>
                                             </tr>
+
+                                            <td>
+                                                @if ($errors->has('researcher'))
+                                                    <span class="text-danger">{{ $errors->first('researcher') }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($errors->has('faculty'))
+                                                    <span class="text-danger">{{ $errors->first('faculty') }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($errors->has('role-research'))
+                                                    <span class="text-danger">{{ $errors->first('role-research') }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($errors->has('pc'))
+                                                    <span class="text-danger">{{ $errors->first('pc') }}</span>
+                                                @endif
+                                            </td>
+
+
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="message-text">แหล่งทุนวิจัย</label>
-                                <select class="form-select" id="source" name="source">
+                                <select class="form-select" id="source_id" name="source_id">
                                     <option value="">--เลือกแหล่งทุน--</option>
                                     @foreach ($list_source as $row)
                                         <option value="{{ $row->id }}">{{ $row->research_source_name }}</option>
                                     @endforeach
                                 </select>
+                                @if ($errors->has('source_id'))
+                                    <span class="text-danger">{{ $errors->first('source_id') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <label>ประเภทงานวิจัย</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                                        value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">1</label>
+                                    <input class="form-check-input" type="checkbox" name="type" id="type"
+                                        value="ชุมชนท้องถิ่น">
+                                    <label class="form-check-label" for="type">ชุมชนท้องถิ่น</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                        value="option2">
-                                    <label class="form-check-label" for="inlineCheckbox2">2</label>
+                                    <input class="form-check-input" name="type" type="checkbox" id="type"
+                                        value="ศิลปวัฒนธรรม">
+                                    <label class="form-check-label" for="type">ศิลปวัฒนธรรม</label>
                                 </div>
+                                @if ($errors->has('type'))
+                                    <span class="text-danger">{{ $errors->first('type') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <label>คำสำคัญ</label>
-                                <textarea placeholder="คำสำคัญในการวิจัย" class="form-control"></textarea>
+                                <textarea name="keyword" id="keyword" placeholder="คำสำคัญในการวิจัย" class="form-control"></textarea>
+                                @if ($errors->has('keyword'))
+                                    <span class="text-danger">{{ $errors->first('keyword') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <label>พื้นที่ในการวิจัย</label>
-                                <textarea placeholder="" class="form-control"></textarea>
+                                <textarea name="area_research" id="area_research" placeholder="" class="form-control"></textarea>
+                                @if ($errors->has('area_research'))
+                                    <span class="text-danger">{{ $errors->first('area_research') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <label for="">วันที่เริ่มต้นการวิจัย</label>
-                                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY"
+                                <input class="form-control" id="sdate" name="sdate" placeholder="MM/DD/YYY"
                                     type="date" />
+                                @if ($errors->has('sdate'))
+                                    <span class="text-danger">{{ $errors->first('sdate') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <label for="">วันที่สิ้นสุดการวิจัย</label>
-                                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY"
+                                <input class="form-control" id="edate" name="edate" placeholder="MM/DD/YYY"
                                     type="date" />
+                                @if ($errors->has('edate'))
+                                    <span class="text-danger">{{ $errors->first('edate') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <label>งบประมาณการวิจัย</label>
-                                <input type="number" class="form-control form-floating" />
+                                <input name="budage" id="budage" type="number" placeholder="0.00"
+                                    class="form-control form-floating" />
+                                @if ($errors->has('budage'))
+                                    <span class="text-danger">{{ $errors->first('budage') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <input type="file" name="word" id="word" class=" form-control">
                                 <span class="text-danger">*ไฟล์ .doc และ .docx เท่านั้น</span>
+                                @if ($errors->has('word'))
+                                    <span class="text-danger">{{ $errors->first('word') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <input type="file" name="pdf" id="pdf" class=" form-control">
                                 <span class="text-danger">*ไฟล์ .pdf เท่านั้น</span>
+                                @if ($errors->has('pdf'))
+                                    <span class="text-danger">{{ $errors->first('pdf') }}</span>
+                                @endif
                             </div>
 
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
-                            <input type="submit" value="ยืนยัน" class="btn btn-primary">
+                            <input type="submit" value="ยืนยัน" name="submit" class="btn btn-primary">
                         </div>
                     </form>
                 </div>
