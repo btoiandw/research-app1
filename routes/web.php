@@ -30,6 +30,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
+
 Route::group([
     'prefix'=>'admin',
     'middleware'=>['auth']
@@ -43,7 +44,7 @@ Route::group([
     'middleware'=>['auth']
 ], function(){
     Route::get('dashboard',[UserController::class,'index'])->name('user.dashboard');
-    Route::get('profile',[UserController::class,'profile'])->name('user.profile');
+    Route::get('insert-research',[UserController::class,'insertResearch'])->name('insert-research');
 });
 
 Route::group([
