@@ -11,8 +11,9 @@ class UserController extends Controller
     //
     public function index()
     {
+        $list_fac = DB::table('faculty_models')->get();
         $list_source = DB::table('research_sources')->get();
-        return view('user.index')->with('list_source', $list_source);
+        return view('user.index',['list_source'=>$list_source,'list_fac'=>$list_fac]);
     }
 
     public function insertResearch(Request $request)

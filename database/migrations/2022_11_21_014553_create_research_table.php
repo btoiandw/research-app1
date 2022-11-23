@@ -14,7 +14,7 @@ class CreateResearchTable extends Migration
     public function up()
     {
         Schema::create('research', function (Blueprint $table) {
-            $table->id();
+            $table->increments('research_id');
             $table->timestamp('date_upload_file');
             $table->string('research_th')->nullable();
             $table->string('research_en')->nullable();

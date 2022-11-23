@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="{{ asset('js/function.js') }}"></script>
 <!-- Bootstrap Date-Picker Plugin -->
 <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
@@ -92,7 +92,7 @@
                             @endphp
                         </div>
                     @endif
-                    <form id="form-insert" name="form-insert" method="POST" action="{{ route('insert-research') }}"
+                    <form id="formInsert" name="formInsert" method="POST" action="{{ route('insert-research') }}"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
@@ -125,10 +125,10 @@
                                     <table class="table" id="tableTap" name="tableTap">
                                         <thead align="center">
                                             <tr>
-                                                <th>ชื่อ-นามสกุล</th>
+                                                <th width="300px">ชื่อ-นามสกุล</th>
                                                 <th>สังกัด/คณะ</th>
-                                                <th>บทบาทในการวิจัย</th>
-                                                <th>ร้อยละในการวิจัย</th>
+                                                <th width="200px">บทบาทในการวิจัย</th>
+                                                <th width="100px">ร้อยละในการวิจัย</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -140,9 +140,19 @@
 
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" name="faculty[]"
-                                                        id="faculty">
-
+                                                    <select class="form-select" id="faculty" name="faculty[]">
+                                                        <option value="">--เลือกสังกัด/คณะ--</option>
+                                                        @foreach ($list_fac as $row)
+                                                            @if ($row->major == '0')
+                                                                <option value="{{ $row->faculty_id }}">
+                                                                    {{ $row->organizational }}</option>
+                                                            @else
+                                                                <option value="{{ $row->faculty_id }}">
+                                                                    {{ $row->major }}&nbsp;&nbsp;{{ $row->organizational }}
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
                                                 </td>
                                                 <td>
                                                     <select class="form-select " name="role-research[]" id="role-research">
@@ -153,36 +163,13 @@
                                                 </td>
                                                 <td>
                                                     <input type="number" class="form-control" name="pc[]"
-                                                        id="pc" placeholder="0.00" />
+                                                        id="pc" placeholder="0.00" onchange="nPc()" />
 
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-info" id="addBtn">+</button>
                                                 </td>
                                             </tr>
-
-                                            <td>
-                                                @if ($errors->has('researcher'))
-                                                    <span class="text-danger">{{ $errors->first('researcher') }}</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($errors->has('faculty'))
-                                                    <span class="text-danger">{{ $errors->first('faculty') }}</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($errors->has('role-research'))
-                                                    <span class="text-danger">{{ $errors->first('role-research') }}</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($errors->has('pc'))
-                                                    <span class="text-danger">{{ $errors->first('pc') }}</span>
-                                                @endif
-                                            </td>
-
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -192,7 +179,7 @@
                                 <select class="form-select" id="source_id" name="source_id">
                                     <option value="">--เลือกแหล่งทุน--</option>
                                     @foreach ($list_source as $row)
-                                        <option value="{{ $row->id }}">{{ $row->research_source_name }}</option>
+                                        <option value="{{ $row->research_sources_id }}">{{ $row->research_source_name }}</option>
                                     @endforeach
                                 </select>
                                 @if ($errors->has('source_id'))
@@ -289,6 +276,25 @@
     </script>
 
     <script type="text/javascript">
+        function nPc() {
+            var max;
+            if (document.formInsert.pc.value == "") {
+                alert('โปรดกกรอกข้อมูลร้อยละในการวิจัย') ว
+            } else {
+                max = parseFloat(document.formInsert.pc.value);
+            }
+
+            var vMax = 100;
+            var sum = 0;
+
+            sum = sum + max;
+
+            if (sum > vMax) {
+                alert('ร้อยละความรับผิดชอบมีค่ามากกว่า 100 ');
+            } else if (sum < vMax) {
+                alert('ร้อยละความรับผิดชอบมีค่าน้อยกว่า 100 ');
+            }
+        }
         $(document).ready(function() {
             var i = 1;
             $('#addBtn').click(function() {
